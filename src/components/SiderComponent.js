@@ -7,7 +7,7 @@ const {SubMenu} = Menu;
 export function SiderComponent(props) {
     return <Sider collapsible collapsed={props.collapsed} onCollapse={props.onCollapse}>
         {/*<div className="logo"/>*/}
-        <div style={{height: '60px'}}></div>
+        <div style={{height: '62px'}}></div>
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
             <Menu.Item key="1">
                 <Icon type="profile" theme="filled" />
