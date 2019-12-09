@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {Avatar, Dropdown, Layout, Menu} from "antd";
+import {Avatar, Dropdown, Icon, Layout, Menu} from "antd";
 import {LoginModelContext} from "../contexts/loginModelContext";
 import {UserContext} from "../contexts/userContext";
 
@@ -16,18 +16,19 @@ export function HeaderComponent() {
     const menu = (
         <Menu>
             <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
-                    1st menu item
+                <a rel="noopener noreferrer">
+                    <span><Icon className="mb-2" type="user"/> Profile</span>
                 </a>
             </Menu.Item>
             <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
-                    2nd menu item
+                <a rel="noopener noreferrer">
+                    <span><Icon className="mb-2" type="setting"/> Settings</span>
                 </a>
             </Menu.Item>
+            <Menu.Divider/>
             <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
-                    3rd menu item
+                <a rel="noopener noreferrer">
+                    <span><Icon className="mb-2" type="logout"/> Logout</span>
                 </a>
             </Menu.Item>
         </Menu>
@@ -44,12 +45,15 @@ export function HeaderComponent() {
                        aria-label="Search" style={{width: '350px'}}/>
                 {(user && user.token) ?
                     <div style={{marginRight: '1em', cursor: 'pointer'}}>
-                        <Dropdown overlay={menu} >
-                            <Avatar style={{backgroundColor: '#7265e6', verticalAlign: 'middle'}}>{user.name.split(' ').pop()}</Avatar>
+                        <Dropdown overlay={menu}>
+                            <Avatar style={{
+                                backgroundColor: '#7265e6',
+                                verticalAlign: 'middle'
+                            }}>{user.name.split(' ').pop()}</Avatar>
                         </Dropdown>
                     </div>
                     :
-                    <button className="btn btn-success my-2 my-sm-0"  style={{marginRight: '1em'}} type="button"
+                    <button className="btn btn-success my-2 my-sm-0" style={{marginRight: '1em'}} type="button"
                             onClick={() => handleClickLogin()}>Đăng Nhập
                     </button>
                 }
