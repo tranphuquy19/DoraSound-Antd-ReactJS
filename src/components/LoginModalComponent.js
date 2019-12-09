@@ -4,14 +4,16 @@
  */
 
 import React, {useContext, useState} from 'react';
-import {Button, Icon, Input, Modal} from "antd";
+import {Button, Icon, Input, Modal, message} from "antd";
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import {LoginModelContext} from "../contexts/loginModelContext";
-import {apiAuthLoginFb} from "../actions/authAction";
+import {apiAuthLogin, apiAuthLoginFb} from "../actions/authAction";
 
 const LoginModelComponent = () => {
+    let hasError = false;
+
     const [loginModel, setLoginModel] = useContext(LoginModelContext);
-    const [formValues, setFormValues]=  useState({
+    const [formValues, setFormValues] = useState({
         email: '',
         password: ''
     });
@@ -20,15 +22,30 @@ const LoginModelComponent = () => {
         setLoginModel({...loginModel, isVisible: false});
     }
 
-    const handleLoginWithPass = () => {
-        setLoginModel({...loginModel, isVisible: false});
+    let handle401 = (err) => {
+        hasError = true;
+        message.error("Sai mật khẩu!");
+    }
+
+    const handleLoginWithPass = async () => {
+        setLoginModel({...loginModel, isLoading: true})
+        const responseApi = await apiAuthLogin(formValues).catch(handle401);
+        afterLoginSubmit(responseApi)
     }
 
     const handleResponseFb = async (res) => {
-        setLoginModel({...loginModel, isLoading: true})
-        const responseApi = await apiAuthLoginFb(res.accessToken);
-        console.log(responseApi);
-        setLoginModel({isLoading: false, isVisible: false});
+        setLoginModel({...loginModel, isLoading: true});
+        const responseApi = await apiAuthLoginFb(res.accessToken).catch(handle401);
+        afterLoginSubmit(responseApi);
+    }
+
+    const afterLoginSubmit = (responseApi = "") => {
+        if (hasError) {
+            setLoginModel({...loginModel, isLoading: false});
+        } else {
+            console.log(responseApi);
+            setLoginModel({isLoading: false, isVisible: false});
+        }
     }
 
     const handleFbClicked = () => {
@@ -54,11 +71,12 @@ const LoginModelComponent = () => {
                     <Button key="back" onClick={() => handleCancel()}>
                         Return
                     </Button>,
-                    <Button key="submit" type="primary" loading={loginModel.isLoading} onClick={() => handleLoginWithPass()}>
+                    <Button key="submit" type="primary" loading={loginModel.isLoading}
+                            onClick={() => handleLoginWithPass()}>
                         Login
                     </Button>
-                    ,<FacebookLogin
-                        key = "auth"
+                    , <FacebookLogin
+                        key="auth"
                         appId="483388002507299"
                         autoLoad={false}
                         fields="name,email,picture"
@@ -74,8 +92,14 @@ const LoginModelComponent = () => {
                         }}/>
                 ]}>
                 <div className="col-md-10">
-                    <Input onChange={(e)=> {onFormChange(e)}} addonBefore={<Icon type="menu" />} name="email" type="text" placeholder="Input Your Email Address"/>
-                    <Input onChange={(e)=> {onFormChange(e)}} addonBefore={<Icon type="question-circle" />} name="password" type="password" placeholder="Input Your Password"/>
+                    <Input onChange={(e) => {
+                        onFormChange(e)
+                    }} addonBefore={<Icon type="menu"/>} name="email" type="text"
+                           placeholder="Input Your Email Address"/>
+                    <Input onChange={(e) => {
+                        onFormChange(e)
+                    }} addonBefore={<Icon type="question-circle"/>} name="password" type="password"
+                           placeholder="Input Your Password"/>
                 </div>
             </Modal>
         </div>
