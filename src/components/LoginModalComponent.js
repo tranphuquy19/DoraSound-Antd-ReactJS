@@ -7,6 +7,7 @@ import React, {useContext, useState} from 'react';
 import {Button, Icon, Input, Modal} from "antd";
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import {LoginModelContext} from "../contexts/loginModelContext";
+import {apiAuthLoginFb} from "../actions/authAction";
 
 const LoginModelComponent = () => {
     const [loginModel, setLoginModel] = useContext(LoginModelContext);
@@ -23,9 +24,11 @@ const LoginModelComponent = () => {
         setLoginModel({...loginModel, isVisible: false});
     }
 
-    const handleResponseFb = (res) => {
-        console.log(res);
-        setLoginModel({...loginModel, isVisible: false});
+    const handleResponseFb = async (res) => {
+        setLoginModel({...loginModel, isLoading: true})
+        const responseApi = await apiAuthLoginFb(res.accessToken);
+        console.log(responseApi);
+        setLoginModel({isLoading: false, isVisible: false});
     }
 
     const handleFbClicked = () => {

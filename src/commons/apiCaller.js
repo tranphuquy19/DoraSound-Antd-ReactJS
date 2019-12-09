@@ -3,8 +3,8 @@
  * Email: tranphuquy19@gmail.com
  */
 import axios from "axios";
-import config from "./configs";
-import headerHeper from "./HeaderHelper";
+import config from "./config";
+import headerHeper from "./headerHelper";
 
 let apiCaller = (endpoint, method = 'GET', body) => {
     return axios({
