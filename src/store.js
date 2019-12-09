@@ -9,7 +9,10 @@ import {UserContext} from "./contexts/userContext";
 import {LoginModelContext} from "./contexts/loginModelContext";
 
 const Store = ({children}) => {
-    const [user, setUser] = useState(User);
+    const userLogged = JSON.parse(localStorage.getItem('user'));
+    let userInitState = (userLogged && userLogged.token) ? userLogged : {user: User};
+
+    const [user, setUser] = useState(userInitState);
     const [modelLogin, setModalLogin] = useState({
         isLoading: false,
         isVisible: false

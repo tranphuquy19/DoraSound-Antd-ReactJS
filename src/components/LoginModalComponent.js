@@ -8,10 +8,12 @@ import {Button, Icon, Input, Modal, message} from "antd";
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import {LoginModelContext} from "../contexts/loginModelContext";
 import {apiAuthLogin, apiAuthLoginFb} from "../actions/authAction";
+import {UserContext} from "../contexts/userContext";
 
 const LoginModelComponent = () => {
     let hasError = false;
 
+    const [user, setUser] = useContext(UserContext);
     const [loginModel, setLoginModel] = useContext(LoginModelContext);
     const [formValues, setFormValues] = useState({
         email: '',
@@ -39,11 +41,12 @@ const LoginModelComponent = () => {
         afterLoginSubmit(responseApi);
     }
 
-    const afterLoginSubmit = (responseApi = "") => {
+    const afterLoginSubmit = (responseApi) => {
         if (hasError) {
             setLoginModel({...loginModel, isLoading: false});
         } else {
             console.log(responseApi);
+            setUser(responseApi.data);
             setLoginModel({isLoading: false, isVisible: false});
         }
     }
