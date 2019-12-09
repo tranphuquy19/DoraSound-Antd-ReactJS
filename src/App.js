@@ -6,6 +6,7 @@ import 'antd/dist/antd.css';
 import {SiderComponent} from "./components/SiderComponent";
 import {HeaderComponent} from "./components/HeaderComponent";
 import {ContentComponent} from "./components/ContentComponent";
+import Store from "./store";
 
 function App() {
     let [collapsed, setCollapsed] = useState(true);
@@ -13,14 +14,16 @@ function App() {
         setCollapsed(collapsed);
     };
     return (
-        <Layout style={{minHeight: '100vh'}}>
-            <SiderComponent collapsed={collapsed} onCollapse={onCollapse}/>
-            <Layout>
-                <HeaderComponent/>
-                <ContentComponent/>
-                {/*<Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>*/}
+        <Store>
+            <Layout style={{minHeight: '100vh'}}>
+                <SiderComponent collapsed={collapsed} onCollapse={onCollapse}/>
+                <Layout>
+                    <HeaderComponent/>
+                    <ContentComponent/>
+                    {/*<Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>*/}
+                </Layout>
             </Layout>
-        </Layout>
+        </Store>
     );
 }
 
