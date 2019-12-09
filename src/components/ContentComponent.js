@@ -14,7 +14,11 @@ export function ContentComponent() {
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
         </Breadcrumb>
+
+        {/*Content Here*/}
         <div style={{padding: 24, background: "#fff"}}>Bill is a cat.</div>
+        {/*End content*/}
+
         <PlayerBarComponent/>
     </Content>;
 }

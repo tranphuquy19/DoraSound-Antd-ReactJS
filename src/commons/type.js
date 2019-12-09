@@ -1,0 +1,20 @@
+/*
+ * Created by @tranphuquy19 on 10/12/2019
+ * Email: tranphuquy19@gmail.com
+ */
+const USER_LOGIN_PASS = 'USER_LOGIN_PASS';
+const USER_LOGIN_GOOGLE = 'USER_LOGIN_GOOGLE';
+const USER_LOGIN_FACEBOOK = 'USER_LOGIN_FACEBOOK';
+const USER_LOGIN_QR_CODE = 'USER_LOGIN_QR_CODE';
+
+const USER_REGISTER = 'USER_REGISTER';
+
+
+export {
+    USER_LOGIN_PASS,
+    USER_LOGIN_FACEBOOK,
+    USER_LOGIN_GOOGLE,
+    USER_LOGIN_QR_CODE,
+
+    USER_REGISTER
+}

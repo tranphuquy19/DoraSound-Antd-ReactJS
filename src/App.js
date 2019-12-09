@@ -7,6 +7,7 @@ import {SiderComponent} from "./components/SiderComponent";
 import {HeaderComponent} from "./components/HeaderComponent";
 import {ContentComponent} from "./components/ContentComponent";
 import Store from "./store";
+import LoginModelComponent from "./components/LoginModalComponent";
 
 function App() {
     let [collapsed, setCollapsed] = useState(true);
@@ -23,6 +24,7 @@ function App() {
                     {/*<Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>*/}
                 </Layout>
             </Layout>
+            <LoginModelComponent/>
         </Store>
     );
 }
