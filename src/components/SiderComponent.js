@@ -10,7 +10,7 @@ export function SiderComponent(props) {
         <div style={{height: '60px'}}></div>
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
             <Menu.Item key="1">
-                <Icon type="pie-chart"/>
+                <Icon type="profile" theme="filled" />
                 <span>Option 1</span>
             </Menu.Item>
             <Menu.Item key="2">
