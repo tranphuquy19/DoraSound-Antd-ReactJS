@@ -7,6 +7,8 @@ import User from "./models/userModel";
 import React, {useState} from "react";
 import {UserContext} from "./contexts/userContext";
 import {LoginModelContext} from "./contexts/loginModelContext";
+import {useAudio} from "react-use";
+import {PlayerContext} from "./contexts/playerContext";
 
 const Store = ({children}) => {
     const userLogged = JSON.parse(localStorage.getItem('user'));
@@ -17,11 +19,17 @@ const Store = ({children}) => {
         isLoading: false,
         isVisible: false
     });
+    const [audio, state, controls, ref] = useAudio({
+        src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+        autoPlay: false,
+    });
 
     return (
         <UserContext.Provider value={[user, setUser]}>
             <LoginModelContext.Provider value={[modelLogin, setModalLogin]}>
-                {children}
+                <PlayerContext.Provider value={{audio, state, controls, ref}}>
+                    {children}
+                </PlayerContext.Provider>
             </LoginModelContext.Provider>
         </UserContext.Provider>
     );
