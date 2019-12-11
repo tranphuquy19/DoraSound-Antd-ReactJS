@@ -1,11 +1,9 @@
-import {Breadcrumb, Card, Layout} from "antd";
+import {Breadcrumb, Layout} from "antd";
 import React, {useContext} from "react";
 import {PlayerBarComponent} from "./PlayerBarComponent";
 import {PlayerContext} from "../contexts/playerContext";
 
 const {Content} = Layout;
-const {Meta} = Card;
-
 
 export function ContentComponent() {
     let {audio, state, controls, ref} = useContext(PlayerContext);

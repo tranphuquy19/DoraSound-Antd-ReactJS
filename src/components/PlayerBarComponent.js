@@ -1,8 +1,9 @@
 import React, {useContext, useRef, useState} from "react";
 import {FixedBottom} from "react-fixed-bottom";
-import {Col, Row, Slider} from "antd";
+import {Button, Col, Dropdown, Icon, Menu, Row, Slider} from "antd";
 import {PlayerContext} from "../contexts/playerContext";
 import {fancyTimeFormat, getRoundTime, getSeekTime} from "../commons/songsCommons";
+import {PlaylistContext} from "../contexts/playlistContext";
 
 let masterDuration = 0;
 
@@ -75,16 +76,25 @@ export function PlayerBarComponent(props) {
 
     let [songIndex, setSongIndex] = useState(0);
     let {audio, state, controls, ref} = useContext(PlayerContext);
+    let {playlist, setPlaylist} = useContext(PlaylistContext);
 
     if (state.duration && state.duration !== 0) {
         masterDuration = state.duration;
     }
 
     let nextSong = () => {
-        let index = songIndex + 1;
-        let next = (index) % music.length;
-        setSongIndex(next);
+        let tempPlayList = [...playlist];
+        tempPlayList.shift();
+        console.log(tempPlayList)
+        if(tempPlayList.length == 0) controls.seek(masterDuration);
+        else setPlaylist(tempPlayList)
     };
+
+    let removeSongByIndex = (i) => {
+        let tempPlaylist = [...playlist];
+        tempPlaylist.splice(i, 1);
+        setPlaylist(tempPlaylist);
+    }
 
     const onSlideBarChange = value => {
         console.log(value);
@@ -96,6 +106,22 @@ export function PlayerBarComponent(props) {
         return currentTime ? currentTime : 0;
     }
 
+    const items = () => {
+        return playlist.map((item, index) => {
+            return <Menu.Item key={index}>
+                {item.name}
+                <span onClick={() => removeSongByIndex(index)} className="text-danger ml-2">
+                <i className="far fa-1x fa-times-circle"></i></span>
+            </Menu.Item>
+        });
+    };
+
+    const menu = (
+        <Menu>
+            {items()}
+        </Menu>
+    );
+
     return <FixedBottom offset={10}>
         <div style={{width: "91%", minHeight: "6em", maxHeight: "6em", textAlign: "center"}}>
             {audio}
@@ -104,9 +130,9 @@ export function PlayerBarComponent(props) {
                     <div className="row pb-2 pl-3 pr-3 pt-1">
                         <div className="col-12">
                             <div className="d-inline">
-                                <span className="text-success">{music[songIndex].name}</span>
+                                <span className="text-success">{playlist[0].name}</span>
                                 <span className="text-white"> - </span>
-                                <span className="text-light">{music[songIndex].singer}</span>
+                                <span className="text-light">{playlist[0].singer}</span>
                             </div>
                             <br/>
                             <div className="d-inline-flex">
@@ -124,13 +150,19 @@ export function PlayerBarComponent(props) {
                                         value={getTime()}
                                         onChange={onSlideBarChange}>
                                 </Slider>
-                                <div className="text-white m-2"><span>{fancyTimeFormat(Math.floor(state.time))}</span></div>
+                                <div className="text-white m-2"><span>{fancyTimeFormat(Math.floor(state.time))}</span>
+                                </div>
                                 <a className="text-success"><i className="fas fa-repeat-alt"/></a>
                                 <a className="text-light ml-1"><i className="far fa-random"/></a>
                                 <a className="text-light ml-1"><i className="fas fa-volume"/></a>
                                 <Slider className="flex-grow ml-3 mb-3 flex-grow"
                                         style={{maxHeight: "0.2rem", width: "10%"}} tipFormatter={null}>
                                 </Slider>
+                                <div className="text-success">
+                                    <Dropdown overlay={menu} placement="topCenter">
+                                        <i className="fas fa-music"> Queue</i>
+                                    </Dropdown>
+                                </div>
                             </div>
                         </div>
                     </div>
