@@ -6,7 +6,7 @@
 import React, {useContext, useState} from 'react';
 import {Button, Icon, Input, Modal, message} from "antd";
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
-import {LoginModelContext} from "../contexts/loginModelContext";
+import {LoginModalContext} from "../contexts/loginModalContext";
 import {apiAuthLogin, apiAuthLoginFb} from "../actions/authAction";
 import {UserContext} from "../contexts/userContext";
 
@@ -14,7 +14,7 @@ const LoginModelComponent = () => {
     let hasError = false;
 
     const [user, setUser] = useContext(UserContext);
-    const [loginModel, setLoginModel] = useContext(LoginModelContext);
+    const [loginModel, setLoginModel] = useContext(LoginModalContext);
     const [formValues, setFormValues] = useState({
         email: '',
         password: ''

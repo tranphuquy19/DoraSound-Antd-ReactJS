@@ -35,9 +35,13 @@ const loginFb = (fbToken) => {
 
 const logout = () => {
     return async dispatch => {
-        localStorage.setItem('user', JSON.stringify(User));
+        localLogout();
         dispatch({type: USER_LOGOUT});
     }
+}
+
+const localLogout = () => {
+    localStorage.setItem('user', JSON.stringify(User));
 }
 
 let storedUser = (user) => {
@@ -49,5 +53,6 @@ export {
     loginFb,
     logout,
     apiAuthLogin,
-    apiAuthLoginFb
+    apiAuthLoginFb,
+    localLogout
 }

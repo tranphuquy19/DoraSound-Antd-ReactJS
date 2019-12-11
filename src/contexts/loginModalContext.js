@@ -5,4 +5,4 @@
 
 import {createContext} from "react";
 
-export const LoginModelContext = createContext(null);
+export const LoginModalContext = createContext(null);

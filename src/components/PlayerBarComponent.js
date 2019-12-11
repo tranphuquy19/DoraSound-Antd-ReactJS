@@ -1,7 +1,10 @@
-import React, {useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import {FixedBottom} from "react-fixed-bottom";
 import {Col, Row, Slider} from "antd";
-import * as PropTypes from "prop-types";
+import {PlayerContext} from "../contexts/playerContext";
+import {fancyTimeFormat, getRoundTime, getSeekTime} from "../commons/songsCommons";
+
+let masterDuration = 0;
 
 export function PlayerBarComponent(props) {
     let playerBarStyle = {
@@ -69,7 +72,13 @@ export function PlayerBarComponent(props) {
             per: 46
         }
     ];
+
     let [songIndex, setSongIndex] = useState(0);
+    let {audio, state, controls, ref} = useContext(PlayerContext);
+
+    if (state.duration && state.duration !== 0) {
+        masterDuration = state.duration;
+    }
 
     let nextSong = () => {
         let index = songIndex + 1;
@@ -79,10 +88,17 @@ export function PlayerBarComponent(props) {
 
     const onSlideBarChange = value => {
         console.log(value);
+        controls.seek(getSeekTime(value, masterDuration));
+    }
+
+    const getTime = () => {
+        let currentTime = getRoundTime(state.time, masterDuration);
+        return currentTime ? currentTime : 0;
     }
 
     return <FixedBottom offset={10}>
         <div style={{width: "91%", minHeight: "6em", maxHeight: "6em", textAlign: "center"}}>
+            {audio}
             <Row>
                 <Col span={24} style={playerBarStyle}>
                     <div className="row pb-2 pl-3 pr-3 pt-1">
@@ -98,13 +114,17 @@ export function PlayerBarComponent(props) {
                             </div>
                             <br/>
                             <div className="d-flex align-items-center">
-                                <a className="text-light"><i className="fas fa-pause"/></a>
+                                <a className="text-light" onClick={state.paused ? controls.play : controls.pause}><i
+                                    className={state.paused ? 'fas fa-play' : 'fas fa-pause'}/></a>
                                 <a onClick={nextSong} className="text-light ml-1">
                                     <i className="fas fa-step-forward"/></a>
                                 <Slider className="flex-grow ml-3 mb-3 justify-content-center"
-                                        style={{maxHeight: "0.3rem", width: "60%"}} tipFormatter={null} onChange={onSlideBarChange}>
+                                        style={{maxHeight: "0.3rem", width: "60%"}} tipFormatter={null}
+                                        defaultValue={0}
+                                        value={getTime()}
+                                        onChange={onSlideBarChange}>
                                 </Slider>
-                                <div className="text-white m-2"><span>00:34</span></div>
+                                <div className="text-white m-2"><span>{fancyTimeFormat(Math.floor(state.time))}</span></div>
                                 <a className="text-success"><i className="fas fa-repeat-alt"/></a>
                                 <a className="text-light ml-1"><i className="far fa-random"/></a>
                                 <a className="text-light ml-1"><i className="fas fa-volume"/></a>
@@ -120,5 +140,4 @@ export function PlayerBarComponent(props) {
     </FixedBottom>;
 }
 
-PlayerBarComponent.propTypes = {
-};
+PlayerBarComponent.propTypes = {};

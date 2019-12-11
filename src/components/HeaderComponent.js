@@ -1,16 +1,23 @@
 import React, {useContext} from "react";
 import {Avatar, Dropdown, Icon, Layout, Menu} from "antd";
-import {LoginModelContext} from "../contexts/loginModelContext";
+import {LoginModalContext} from "../contexts/loginModalContext";
 import {UserContext} from "../contexts/userContext";
+import {localLogout} from "../actions/authAction";
+import User from "../models/userModel";
 
 const {Header} = Layout;
 
 export function HeaderComponent() {
-    const [loginModel, setLoginModel] = useContext(LoginModelContext);
+    const [loginModal, setLoginModel] = useContext(LoginModalContext);
     const [user, setUser] = useContext(UserContext);
 
     const handleClickLogin = () => {
-        setLoginModel({...loginModel, isVisible: true});
+        setLoginModel({...loginModal, isVisible: true});
+    }
+
+    const onLogoutClick = () => {
+        localLogout();
+        setUser(User);
     }
 
     const menu = (
@@ -26,7 +33,7 @@ export function HeaderComponent() {
                 </a>
             </Menu.Item>
             <Menu.Divider/>
-            <Menu.Item>
+            <Menu.Item onClick={() => onLogoutClick()}>
                 <a rel="noopener noreferrer">
                     <span><Icon className="mb-2" type="logout"/> Logout</span>
                 </a>
