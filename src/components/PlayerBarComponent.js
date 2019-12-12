@@ -5,12 +5,14 @@ import {convertToPlayerItemObject, fancyTimeFormat, getRoundTime, getSeekTime} f
 import {PlaylistContext} from "../contexts/playlistContext";
 import {SongIndexContext} from "../contexts/songIndexContext";
 import Sound from 'react-sound';
+import {PlayStatusContext} from "../contexts/playStatusContext";
 
 export function PlayerBarComponent() {
     let playerBarStyle = {
         backgroundColor: '#03141A'
     };
 
+    let {playStatus, setPlayStatus} = useContext(PlayStatusContext);
     let {songIndex, setSongIndex} = useContext(SongIndexContext);
     let {playlist, setPlaylist} = useContext(PlaylistContext);
 
@@ -20,7 +22,6 @@ export function PlayerBarComponent() {
     let [volume, setVolume] = useState(80);
     let [playbackRate, setPlaybackRate] = useState(1);
     let [loop, setLoop] = useState(false);
-    let [playStatus, setPlayStatus] = useState('PLAYING');
 
     useEffect(() => {
         setPosition(0);
