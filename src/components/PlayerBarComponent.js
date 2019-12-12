@@ -29,7 +29,9 @@ export function PlayerBarComponent() {
     const items = () => {
         return playlist.map((item, index) => {
             return <Menu.Item key={index}>
-                {item.name}
+                <span onClick={() => {
+                    setSongIndex(index);
+                }}>{item.name}</span>
                 <span onClick={() => {
                     playlist.splice(index, 1);
                     setPlaylist(playlist);
@@ -65,7 +67,9 @@ export function PlayerBarComponent() {
                 onPause={() => console.log('Paused')}
                 onResume={() => console.log('Resumed')}
                 onStop={() => console.log('Stopped')}
-                onFinishedPlaying={() => setPlayStatus('PAUSED')}
+                onFinishedPlaying={() => {
+                    songIndex == playlist.length - 1 ? setPlayStatus('PAUSED') : setSongIndex(songIndex + 1)
+                }}
             />
             <Row>
                 <Col span={24} style={playerBarStyle}>
@@ -103,7 +107,8 @@ export function PlayerBarComponent() {
                                             setPosition(getSeekTime(value, duration));
                                         }}>
                                 </Slider>
-                                <div className="text-white m-2"><span>{fancyTimeFormat(Math.floor(0))}</span>
+                                <div className="text-white m-2">
+                                    <span>{fancyTimeFormat(Math.floor(position / 1000))}</span>
                                 </div>
                                 <a className="text-success"><i className="fas fa-repeat-alt"/></a>
                                 <a className="text-light ml-1"><i className="far fa-random"/></a>
