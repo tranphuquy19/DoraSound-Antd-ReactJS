@@ -25,7 +25,21 @@ export function PlayerBarComponent() {
     useEffect(() => {
         setPosition(0);
         setSrc(convertToPlayerItemObject(playlist[songIndex]));
+    }, [duration]);
+
+    useEffect(() => {
+        setSrc(convertToPlayerItemObject(playlist[songIndex]));
     }, [songIndex]);
+
+    const getIndex = (deleteIndex) => {
+        if (songIndex == 0) {
+            if (deleteIndex >= 0) return 0;
+        } else if (songIndex >= 1, songIndex <= playlist.length - 1) {
+            if (deleteIndex == 0) return 0;
+            else if (deleteIndex == songIndex) return songIndex - 1;
+            else if (deleteIndex > songIndex) return songIndex;
+        } else if (songIndex == playlist.length - 1) return songIndex;
+    }
 
     const items = () => {
         return playlist.map((item, index) => {
@@ -34,8 +48,11 @@ export function PlayerBarComponent() {
                     setSongIndex(index);
                 }}>{item.name}</span>
                 <span onClick={() => {
-                    playlist.splice(index, 1);
-                    setPlaylist(playlist);
+                    if (playlist.length > 1) {
+                        setSongIndex(getIndex(index));
+                        playlist.splice(index, 1);
+                        setPlaylist(playlist);
+                    }
                 }} className="text-danger ml-2">
                 <i className="far fa-1x fa-times-circle"></i></span>
             </Menu.Item>
@@ -47,7 +64,6 @@ export function PlayerBarComponent() {
             {items()}
         </Menu>
     );
-
 
     return <FixedBottom offset={10}>
         <div style={{width: "91%", minHeight: "6em", maxHeight: "6em", textAlign: "center"}}>
