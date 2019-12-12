@@ -26,7 +26,7 @@ export function PlayerBarComponent() {
     useEffect(() => {
         setPosition(0);
         setSrc(convertToPlayerItemObject(playlist[songIndex]));
-    }, [duration]);
+    }, [duration, playlist]);
 
     useEffect(() => {
         setSrc(convertToPlayerItemObject(playlist[songIndex]));
