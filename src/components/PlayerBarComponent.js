@@ -23,13 +23,14 @@ export function PlayerBarComponent() {
     let [playStatus, setPlayStatus] = useState('PLAYING');
 
     useEffect(() => {
+        setPosition(0);
         setSrc(convertToPlayerItemObject(playlist[songIndex]));
     }, [songIndex]);
 
     const items = () => {
         return playlist.map((item, index) => {
             return <Menu.Item key={index}>
-                <span onClick={() => {
+                <span className={`text-${index == songIndex ? 'success' : 'dark'}`} onClick={() => {
                     setSongIndex(index);
                 }}>{item.name}</span>
                 <span onClick={() => {
