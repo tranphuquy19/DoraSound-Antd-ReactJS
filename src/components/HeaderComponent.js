@@ -4,6 +4,7 @@ import {LoginModalContext} from "../contexts/loginModalContext";
 import {UserContext} from "../contexts/userContext";
 import {localLogout} from "../actions/authAction";
 import User from "../models/userModel";
+import randomColor from 'randomcolor';
 
 const {Header} = Layout;
 
@@ -54,8 +55,8 @@ export function HeaderComponent() {
                     <div style={{marginRight: '1em', cursor: 'pointer'}}>
                         <Dropdown overlay={menu}>
                             <Avatar style={{
-                                backgroundColor: '#7265e6',
-                                verticalAlign: 'middle'
+                                backgroundColor: randomColor({luminosity: 'dark'}),
+                                verticalAlign: 'middle',
                             }}>{user.name.split(' ').pop()}</Avatar>
                         </Dropdown>
                     </div>
